@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Oswald, Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 // Configure Roboto (Body Font)
 const roboto = Roboto({
@@ -31,11 +32,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${roboto.variable} ${oswald.variable}`}>
-      <body className={`font-sans bg-brand-black text-brand-white`}>
+      <body className={`font-sans bg-brand-black text-brand-white flex flex-col min-h-screen`}>
         <Header />
-        <main className="container mx-auto p-4 pt-20">
+        <main className="container mx-auto p-4 pt-20 flex-grow">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
