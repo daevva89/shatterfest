@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en" className={`${roboto.variable} ${oswald.variable}`}>
       <body className={`font-sans bg-brand-black text-brand-white`}>
         <Header />
-        <main className="container mx-auto p-4">
+        <main className="container mx-auto p-4 pt-20">
           {children}
         </main>
       </body>
