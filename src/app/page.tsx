@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
 import LineupHighlights from "@/components/LineupHighlights";
+import QuickInfoSection from "@/components/QuickInfoSection";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <AboutSection />
       <LineupHighlights />
+      <QuickInfoSection />
 
       {/* Placeholder for other homepage sections */}
       <div className="container mx-auto p-4">
