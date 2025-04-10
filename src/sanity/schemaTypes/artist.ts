@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { UsersIcon } from '@heroicons/react/24/outline' // Or any relevant icon
+import { UsersIcon, CalendarDaysIcon } from '@heroicons/react/24/outline' // Or any relevant icon
 
 export default defineType({
   name: 'artist',
@@ -22,6 +22,21 @@ export default defineType({
         maxLength: 96,
       },
       description: 'Used for the artist\'s page URL. Click Generate.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'day',
+      title: 'Playing Day',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Friday', value: 'friday' },
+          { title: 'Saturday', value: 'saturday' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      description: 'Which day is the artist playing?',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
