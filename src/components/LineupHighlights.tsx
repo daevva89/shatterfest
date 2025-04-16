@@ -1,68 +1,68 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Use Next.js Image component
-import { client, urlFor } from '@/sanity/lib/client'; // Import client and urlFor
-import type { SanityDocument } from 'next-sanity'; // Import type for fetched data
+import Image from 'next/image';
 
-// GROQ query to fetch the first 4 artists, ordered by name
-// Select only the necessary fields
-const ARTISTS_QUERY = `*[_type == "artist"] | order(name asc) [0...4] {
-  _id,
-  name,
-  slug,
-  image
-}`;
-
-// Define an interface for the expected artist data structure
-interface ArtistHighlight extends SanityDocument {
-  name?: string;
-  slug?: { current?: string };
-  image?: any; // Use 'any' for simplicity or define a more specific image type
+// Define interfaces for props and artist data
+interface ArtistData {
+  _id: string;
+  name: string;
+  country?: string;
+  image?: {
+    url: string;
+    alt?: string;
+  };
+  slug?: { 
+    current: string;
+  };
 }
 
-// Make the component async to fetch data
-const LineupHighlights = async () => {
-  // Fetch the artists data
-  const artists: ArtistHighlight[] = await client.fetch(ARTISTS_QUERY);
+interface LineupHighlightsProps {
+  title: string;
+  subtitle?: string;
+  artists: ArtistData[];
+}
 
+const LineupHighlights = ({ title, subtitle, artists }: LineupHighlightsProps) => {
   return (
-    <section className="py-16 md:py-24 bg-brand-black"> {/* Match main background */}
+    <section className="py-16 md:py-24 bg-brand-black">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-12 text-brand-white">
-          Lineup Highlights
+        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-brand-white">
+          {title}
         </h2>
+        
+        {subtitle && (
+          <p className="text-xl text-brand-white/80 mb-12">{subtitle}</p>
+        )}
 
         {/* Grid for featured bands */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
-          {/* Map over fetched artists */}
+          {/* Map over artists passed as props */}
           {artists.map((artist) => {
-            const imageUrl = artist.image ? urlFor(artist.image)?.width(400).height(400).url() : null;
-            const altText = artist.image?.alt || artist.name || 'Band photo';
-            
             return (
               <div key={artist._id} className="group relative overflow-hidden rounded-lg shadow-lg">
                 <div className="absolute inset-0 bg-brand-gray"></div>
-                {imageUrl ? (
+                {artist.image?.url ? (
                   <Image 
-                    src={imageUrl} 
-                    alt={altText} 
+                    src={artist.image.url} 
+                    alt={artist.image.alt || artist.name} 
                     width={400}
                     height={400}
                     className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-                    unoptimized={process.env.NODE_ENV !== 'production'} // Helpful for external image URLs if not using Sanity CDN directly
+                    unoptimized={process.env.NODE_ENV !== 'production'}
                   />
                 ) : (
                   <div className="w-full h-[400px] bg-brand-gray flex items-center justify-center">
                     <span className="text-brand-white/50">No Image</span>
                   </div>
                 )}
-                {/* Optional: Link wrapper or name overlay */}
-                {/* Example: Link wrapper to artist page (if you create those) */}
-                {/* 
-                <Link href={`/artists/${artist.slug?.current || ''}`} className="absolute inset-0 z-10">
-                   <span className="sr-only">View {artist.name}</span>
-                </Link> 
-                */}
+                
+                {/* Band name overlay */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                  <h3 className="text-lg font-bold text-brand-white">{artist.name}</h3>
+                  {artist.country && (
+                    <p className="text-sm text-brand-white/70">{artist.country}</p>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -75,7 +75,6 @@ const LineupHighlights = async () => {
         >
           See Full Lineup
         </Link>
-
       </div>
     </section>
   );

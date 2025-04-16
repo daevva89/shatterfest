@@ -98,6 +98,7 @@ export default defineType({
                   { title: 'YouTube', value: 'youtube' },
                   { title: 'Facebook', value: 'facebook' },
                   { title: 'Instagram', value: 'instagram' },
+                  { title: 'TikTok', value: 'tiktok' },
                   { title: 'Bandcamp', value: 'bandcamp' },
                   { title: 'Website', value: 'website' },
                   { title: 'Other', value: 'other' },

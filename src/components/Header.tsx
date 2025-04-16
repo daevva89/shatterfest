@@ -34,7 +34,6 @@ const Header = () => {
           <ul className="flex space-x-6 items-center">
             <li><Link href="/" className="hover:text-brand-green transition-colors">Home</Link></li>
             <li><Link href="/lineup" className="hover:text-brand-green transition-colors">Lineup</Link></li>
-            <li><Link href="/schedule" className="hover:text-brand-green transition-colors">Schedule</Link></li>
             <li><Link href="/info" className="hover:text-brand-green transition-colors">Info</Link></li>
             <li>
               {/* External Link to Tickets - use <a> tag */}
@@ -80,7 +79,6 @@ const Header = () => {
         <nav className="flex flex-col space-y-6 mt-10"> {/* Added mt-10 for spacing */}
           <Link href="/" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Home</Link>
           <Link href="/lineup" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Lineup</Link>
-          <Link href="/schedule" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Schedule</Link>
           <Link href="/info" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Info</Link>
           <a 
             href="https://www.iabilet.ro/bilete-shatterfest-2024-97983/"
