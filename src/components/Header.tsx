@@ -34,16 +34,35 @@ const Header = ({ siteSettings }: HeaderProps) => {
   return (
     // Make header sticky, full width, high z-index, add bottom border
     <header className="fixed top-0 left-0 w-full bg-brand-black text-brand-white p-4 shadow-md z-50 border-b border-brand-gray/50">
-      <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center hover:opacity-90 transition-opacity" onClick={closeMobileMenu}>
+      <div className="container mx-auto flex md:justify-between items-center">
+        {/* Mobile Menu Button (Left side on small screens) */}
+        <div className="md:hidden order-first w-1/4">
+          <button 
+            onClick={toggleMobileMenu} 
+            className="text-brand-white focus:outline-none p-2 rounded hover:bg-brand-gray/50"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <XMarkIcon className="h-6 w-6 text-brand-white" /> // Close Icon
+            ) : (
+              <Bars3Icon className="h-6 w-6 text-brand-white" /> // Hamburger Icon
+            )}
+          </button>
+        </div>
+
+        {/* Logo - Centered on mobile */}
+        <Link 
+          href="/" 
+          className="relative flex items-center justify-center md:justify-start hover:opacity-90 transition-opacity w-1/2 md:w-auto mx-auto md:mx-0" 
+          onClick={closeMobileMenu}
+        >
           {logoUrl ? (
-            <div className="relative h-8 md:h-10 w-auto">
+            <div className="relative h-16 md:h-24 w-auto -translate-y-1 -mb-10 md:-mb-14 z-10">
               <Image 
                 src={logoUrl}
                 alt={logoAlt}
-                width={160}
-                height={40}
+                width={240}
+                height={100}
                 className="object-contain h-full w-auto"
                 priority
               />
@@ -75,21 +94,8 @@ const Header = ({ siteSettings }: HeaderProps) => {
           </ul>
         </nav>
 
-        {/* Mobile Menu Button (Visible only on small screens) */}
-        <div className="md:hidden">
-          <button 
-            onClick={toggleMobileMenu} 
-            className="text-brand-white focus:outline-none p-2 rounded hover:bg-brand-gray/50"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <XMarkIcon className="h-6 w-6 text-brand-white" /> // Close Icon
-            ) : (
-              <Bars3Icon className="h-6 w-6 text-brand-white" /> // Hamburger Icon
-            )}
-          </button>
-        </div>
-
+        {/* Empty div to balance the mobile layout (right side) */}
+        <div className="md:hidden order-last w-1/4"></div>
       </div>
 
       {/* Mobile Menu Panel - Slides in from right */}

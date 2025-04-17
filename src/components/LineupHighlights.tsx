@@ -35,7 +35,11 @@ const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
           {artists.map((artist) => {
             return (
               <div key={artist._id} className="group relative overflow-hidden rounded-lg shadow-lg">
-                <div className="absolute inset-0 bg-brand-gray"></div>
+                {/* Background only shows when there's no image */}
+                {!artist.image?.url && (
+                  <div className="absolute inset-0 bg-brand-gray"></div>
+                )}
+                
                 {artist.image?.url ? (
                   <Image 
                     src={artist.image.url} 
@@ -50,14 +54,6 @@ const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
                     <span className="text-brand-white/50">No Image</span>
                   </div>
                 )}
-                
-                {/* Band name overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <h3 className="text-lg font-bold text-brand-white">{artist.name}</h3>
-                  {artist.country && (
-                    <p className="text-sm text-brand-white/70">{artist.country}</p>
-                  )}
-                </div>
               </div>
             );
           })}
