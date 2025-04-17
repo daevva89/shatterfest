@@ -30,7 +30,7 @@ const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
         </h2>
 
         {/* Grid for featured bands */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-12">
           {/* Map over artists passed as props */}
           {artists.map((artist) => {
             return (

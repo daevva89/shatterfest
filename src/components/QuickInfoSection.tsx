@@ -38,7 +38,7 @@ const QuickInfoSection = ({ title, infoItems }: QuickInfoSectionProps) => {
           <h2 className="font-heading text-3xl text-center mb-8 text-brand-white">{title}</h2>
         )}
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
           {infoItems.map((item) => {
             const IconComponent = getIconComponent(item.iconType);
             return (
