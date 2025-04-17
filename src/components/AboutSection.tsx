@@ -21,7 +21,7 @@ const AboutSection = ({ title, content }: AboutSectionProps) => {
   console.log("About section rendering with:", { title, content });
   
   return (
-    <section className="py-16 md:py-24 bg-brand-gray/5"> {/* Light gray background to separate */}
+    <section className="py-4 md:py-16 lg:py-24 bg-brand-gray/5"> {/* Light gray background to separate */}
       <div className="container mx-auto px-6 md:px-4 max-w-3xl text-center"> {/* Max width for readability */}
         <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-brand-white">
           {title}

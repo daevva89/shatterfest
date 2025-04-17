@@ -23,7 +23,7 @@ interface LineupHighlightsProps {
 
 const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
   return (
-    <section className="py-16 md:py-24 bg-brand-black">
+    <section className="py-4 md:py-16 lg:py-24 bg-brand-black">
       <div className="container mx-auto px-4 text-center">
         <h2 className="font-heading text-4xl md:text-5xl font-bold mb-12 text-brand-white">
           {title}

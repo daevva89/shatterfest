@@ -32,7 +32,7 @@ const getIconComponent = (iconType: string) => {
 
 const QuickInfoSection = ({ title, infoItems }: QuickInfoSectionProps) => {
   return (
-    <section className="bg-brand-gray/10 py-8 md:py-12">
+    <section className="bg-brand-gray/10 py-4 md:py-8 lg:py-12">
       <div className="container mx-auto px-4">
         {title && (
           <h2 className="font-heading text-3xl text-center mb-8 text-brand-white">{title}</h2>

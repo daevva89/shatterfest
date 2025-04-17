@@ -11,6 +11,10 @@ interface HomepageData {
     url: string;
     alt?: string;
   };
+  mobileHeroImage?: {
+    url: string;
+    alt?: string;
+  };
   primaryCTA?: {
     text: string;
     url: string;
@@ -42,6 +46,10 @@ async function getData(): Promise<HomepageData | null> {
     // GROQ query to get the homepage data
     const query = groq`*[_type == "homepage"][0]{
       heroImage{
+        "url": asset->url,
+        "alt": alt
+      },
+      mobileHeroImage{
         "url": asset->url,
         "alt": alt
       },
@@ -85,6 +93,7 @@ export default async function Home() {
       {(homepageData?.heroImage?.url || homepageData?.primaryCTA?.isEnabled) && (
         <Hero 
           imageUrl={homepageData.heroImage?.url}
+          mobileImageUrl={homepageData.mobileHeroImage?.url}
           imageAlt={homepageData.heroImage?.alt || "ShatterFest Hero Image"}
           primaryCTA={homepageData.primaryCTA}
         />

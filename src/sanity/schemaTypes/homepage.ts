@@ -10,12 +10,29 @@ export default defineType({
     // Hero Section
     defineField({
       name: 'heroImage',
-      title: 'Hero Background Image',
+      title: 'Hero Background Image (Desktop)',
       type: 'image',
       options: {
         hotspot: true,
       },
-      description: 'Main hero/banner image (should be high quality, landscape orientation, 16:9 ratio like 1920x1080)',
+      description: 'Main hero image for desktop (should be high quality, landscape orientation, 16:9 ratio like 1920x1080)',
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alternative Text',
+          type: 'string',
+          description: 'Important for SEO and accessibility',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'mobileHeroImage',
+      title: 'Hero Background Image (Mobile)',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      description: 'Optional mobile hero image (portrait orientation, around 9:16 ratio). If not provided, desktop image will be used.',
       fields: [
         defineField({
           name: 'alt',

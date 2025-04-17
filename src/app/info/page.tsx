@@ -11,7 +11,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 
 export default function InfoPage() {
   return (
-    <div className="container mx-auto px-4 py-12 md:py-16 text-brand-white/90">
+    <div className="container mx-auto px-4 py-4 md:py-12 lg:py-16 text-brand-white/90">
       <h1 className="font-heading text-5xl md:text-6xl font-bold text-center mb-12 md:mb-16 text-brand-white">
         Practical Info
       </h1>
