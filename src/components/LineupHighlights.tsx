@@ -35,11 +35,6 @@ const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
           {artists.map((artist) => {
             return (
               <div key={artist._id} className="group relative overflow-hidden rounded-lg shadow-lg">
-                {/* Background only shows when there's no image */}
-                {!artist.image?.url && (
-                  <div className="absolute inset-0 bg-brand-gray"></div>
-                )}
-                
                 {artist.image?.url ? (
                   <Image 
                     src={artist.image.url} 

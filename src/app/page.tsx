@@ -31,7 +31,7 @@ interface HomepageData {
     iconType: string;
   }[];
   lineupHighlightsTitle?: string;
-  featuredArtists?: {
+  allArtists?: {
     _id: string;
     name: string;
     country?: string;
@@ -44,10 +44,25 @@ interface HomepageData {
   pageDescription?: string;
 }
 
+// Helper function to randomly select N items from an array
+function getRandomItems<T>(array: T[], n: number): T[] {
+  // Clone array to avoid modifying the original
+  const shuffled = [...array];
+  
+  // Fisher-Yates shuffle
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  
+  // Return the first n elements (or less if array is smaller)
+  return shuffled.slice(0, Math.min(n, shuffled.length));
+}
+
 async function getData(): Promise<HomepageData | null> {
   try {
     // GROQ query to get the homepage data - always fetch the document with ID 'homepage'
-    const query = groq`*[_type == "homepage" && _id == "homepage"][0]{
+    const homepageQuery = groq`*[_type == "homepage" && _id == "homepage"][0]{
       heroImage{
         "url": asset->url,
         "alt": alt
@@ -66,22 +81,30 @@ async function getData(): Promise<HomepageData | null> {
         iconType
       },
       lineupHighlightsTitle,
-      "featuredArtists": featuredArtists[]->{
-        _id,
-        name,
-        country,
-        "image": image{
-          "url": asset->url,
-          "alt": alt
-        }
-      },
       pageTitle,
       pageDescription
     }`;
     
+    // GROQ query to fetch all artists
+    const artistsQuery = groq`*[_type == "artist"] {
+      _id,
+      name,
+      country,
+      "image": image {
+        "url": asset->url,
+        "alt": alt
+      }
+    }`;
+    
     // Fetch data from Sanity
-    const data = await client.fetch<HomepageData>(query);
-    return data;
+    const homepageData = await client.fetch<HomepageData>(homepageQuery);
+    const allArtists = await client.fetch<any[]>(artistsQuery);
+    
+    // Combine the data
+    return {
+      ...homepageData,
+      allArtists
+    };
   } catch (error) {
     console.error('Error fetching homepage data:', error);
     return null;
@@ -107,6 +130,11 @@ export default async function Home() {
   // Get homepage data
   const homepageData = await getData();
   
+  // Randomly select 4 artists (if we have artists)
+  const randomArtists = homepageData?.allArtists 
+    ? getRandomItems(homepageData.allArtists, 4)
+    : [];
+  
   return (
     <main>
       {/* Only render Hero if image or CTA exists */}
@@ -127,12 +155,11 @@ export default async function Home() {
         />
       )}
       
-      {/* Only render LineupHighlights if data exists */}
-      {homepageData?.lineupHighlightsTitle && homepageData?.featuredArtists && 
-       homepageData.featuredArtists.length > 0 && (
+      {/* Display random artists in LineupHighlights */}
+      {homepageData?.lineupHighlightsTitle && randomArtists.length > 0 && (
         <LineupHighlights 
           title={homepageData.lineupHighlightsTitle}
-          artists={homepageData.featuredArtists}
+          artists={randomArtists}
         />
       )}
       
