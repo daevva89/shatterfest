@@ -3,12 +3,14 @@ import Image from 'next/image';
 import { client, urlFor } from '@/sanity/lib/client';
 import type { SanityDocument } from 'next-sanity';
 
-// GROQ query to fetch all artists, ordered by name, including the 'day' field
-const ALL_ARTISTS_QUERY = `*[_type == "artist"] | order(name asc) {
+// GROQ query to fetch all artists, ordered by position (then name as fallback), including position field
+const ALL_ARTISTS_QUERY = `*[_type == "artist"] | order(coalesce(position, 1000), name asc) {
   _id,
   name,
   slug,
   image,
+  country,
+  position,
   day
 }`;
 
@@ -17,13 +19,15 @@ interface Artist extends SanityDocument {
   name?: string;
   slug?: { current?: string };
   image?: any;
+  country?: string;
+  position?: number;
   day?: 'friday' | 'saturday' | 'tbc' | string; // Add day to type
 }
 
 // Helper function to render a grid of artists
 const ArtistGrid = ({ artists }: { artists: Artist[] }) => (
   // Grid for artists within a day column
-  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+  <div className="grid grid-cols-2 gap-4">
     {artists.map((artist) => {
       const imageUrl = artist.image ? urlFor(artist.image)?.width(300).height(300).url() : null;
       const altText = artist.image?.alt || artist.name || 'Band photo';
@@ -36,7 +40,7 @@ const ArtistGrid = ({ artists }: { artists: Artist[] }) => (
                 src={imageUrl}
                 alt={altText}
                 fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" // Adjusted sizes
+                sizes="(max-width: 640px) 50vw, 25vw" // Adjusted sizes for 2 columns
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 unoptimized={process.env.NODE_ENV !== 'production'}
               />
@@ -55,7 +59,9 @@ const ArtistGrid = ({ artists }: { artists: Artist[] }) => (
           <h3 className="font-heading text-lg font-medium text-brand-white truncate" title={artist.name}>
             {artist.name}
           </h3>
-          {/* Optional: Add country or other info here */}
+          {artist.country && (
+            <p className="text-sm text-brand-white/70">{artist.country}</p>
+          )}
         </div>
       );
     })}

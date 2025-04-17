@@ -86,10 +86,11 @@ async function getData(): Promise<HomepageData | null> {
     }`;
     
     // GROQ query to fetch all artists
-    const artistsQuery = groq`*[_type == "artist"] {
+    const artistsQuery = groq`*[_type == "artist"] | order(coalesce(position, 1000), name asc) {
       _id,
       name,
       country,
+      position,
       "image": image {
         "url": asset->url,
         "alt": alt

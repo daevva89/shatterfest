@@ -14,6 +14,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'position',
+      title: 'Position in Lineup',
+      type: 'number',
+      description: 'Lower numbers appear higher on the page (e.g., 1 for headliner, 2 for second band, etc.)',
+      validation: (Rule) => Rule.integer().positive(),
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
