@@ -1,9 +1,29 @@
 import React from 'react';
 import Link from 'next/link';
-import { FaFacebook, FaInstagram } from 'react-icons/fa'; // Import social icons
+import { FaFacebook, FaInstagram, FaYoutube, FaTiktok, FaTwitter } from 'react-icons/fa'; // Import social icons
+import { SiteSettings } from '@/lib/sanity'; // Import SiteSettings type
 
-const Footer = () => {
+// Add props for social links
+interface FooterProps {
+  siteSettings?: SiteSettings | null;
+}
+
+// Get icon component based on platform
+const getSocialIcon = (platform: string) => {
+  switch (platform) {
+    case 'facebook': return FaFacebook;
+    case 'instagram': return FaInstagram;
+    case 'youtube': return FaYoutube;
+    case 'tiktok': return FaTiktok;
+    case 'twitter': return FaTwitter;
+    default: return FaFacebook;
+  }
+};
+
+const Footer = ({ siteSettings }: FooterProps) => {
   const currentYear = new Date().getFullYear(); // Get current year dynamically
+  const siteTitle = siteSettings?.title || 'ShatterFest';
+  const hasSocialLinks = siteSettings?.socialLinks && siteSettings.socialLinks.length > 0;
 
   return (
     <footer className="bg-brand-black text-brand-gray border-t border-brand-gray/30 py-8 mt-16">
@@ -11,30 +31,29 @@ const Footer = () => {
         
         {/* Copyright */}
         <div className="mb-4 md:mb-0">
-          <p className="text-sm">&copy; {currentYear} ShatterFest / Final Step Productions.</p>
+          <p className="text-sm">&copy; {currentYear} {siteTitle} / Final Step Productions.</p>
         </div>
 
         {/* Social Media Links */}
-        <div className="flex space-x-6 mb-4 md:mb-0">
-          <a 
-            href="https://www.facebook.com/finalstepproductions" // Replace with actual FB link
-            target="_blank" 
-            rel="noopener noreferrer" 
-            aria-label="Facebook"
-            className="text-brand-gray hover:text-brand-green transition-colors"
-          >
-            <FaFacebook size={24} />
-          </a>
-          <a 
-            href="https://www.instagram.com/finalstepproductions/" // Replace with actual IG link
-            target="_blank" 
-            rel="noopener noreferrer" 
-            aria-label="Instagram"
-            className="text-brand-gray hover:text-brand-green transition-colors"
-          >
-            <FaInstagram size={24} />
-          </a>
-        </div>
+        {hasSocialLinks && (
+          <div className="flex space-x-6 mb-4 md:mb-0">
+            {siteSettings?.socialLinks?.map((link) => {
+              const SocialIcon = getSocialIcon(link.platform);
+              return (
+                <a 
+                  key={link.platform}
+                  href={link.url}
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label={link.platform}
+                  className="text-brand-gray hover:text-brand-green transition-colors"
+                >
+                  <SocialIcon size={24} />
+                </a>
+              );
+            })}
+          </div>
+        )}
 
         {/* Legal Links */}
         <div className="flex space-x-4 text-sm">

@@ -109,6 +109,6 @@ export default function InfoPage() {
 
 // Optional: Add metadata specific to the Info page
 export const metadata = {
-  title: 'Practical Info - ShatterFest 2025',
-  description: 'Find venue details, travel info, accommodation suggestions, and festival rules for ShatterFest 2025.',
+  title: 'Practical Info',
+  description: 'Find venue details, travel info, accommodation suggestions, and festival rules.',
 }; 

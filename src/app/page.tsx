@@ -4,6 +4,7 @@ import LineupHighlights from "@/components/LineupHighlights";
 import QuickInfoSection from "@/components/QuickInfoSection";
 import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
+import { Metadata } from "next";
 
 // Define the type for homepage data
 interface HomepageData {
@@ -39,12 +40,14 @@ interface HomepageData {
       alt?: string;
     };
   }[];
+  pageTitle?: string;
+  pageDescription?: string;
 }
 
 async function getData(): Promise<HomepageData | null> {
   try {
-    // GROQ query to get the homepage data
-    const query = groq`*[_type == "homepage"][0]{
+    // GROQ query to get the homepage data - always fetch the document with ID 'homepage'
+    const query = groq`*[_type == "homepage" && _id == "homepage"][0]{
       heroImage{
         "url": asset->url,
         "alt": alt
@@ -71,7 +74,9 @@ async function getData(): Promise<HomepageData | null> {
           "url": asset->url,
           "alt": alt
         }
-      }
+      },
+      pageTitle,
+      pageDescription
     }`;
     
     // Fetch data from Sanity
@@ -81,6 +86,21 @@ async function getData(): Promise<HomepageData | null> {
     console.error('Error fetching homepage data:', error);
     return null;
   }
+}
+
+// Generate metadata for the homepage
+export async function generateMetadata(): Promise<Metadata> {
+  const homepageData = await getData();
+  
+  // If no homepage data, return empty object
+  if (!homepageData) {
+    return {};
+  }
+  
+  return {
+    title: homepageData.pageTitle || undefined,
+    description: homepageData.pageDescription || undefined,
+  };
 }
 
 export default async function Home() {

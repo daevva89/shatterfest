@@ -113,8 +113,8 @@ export default async function LineupPage() {
   );
 }
 
-// Optional: Add metadata specific to the Lineup page
-// export const metadata = {
-//   title: 'Lineup - ShatterFest 2025',
-//   description: 'Check out the full lineup for ShatterFest 2025 in Bucharest.',
-// }; 
+// Add metadata specific to the Lineup page
+export const metadata = {
+  title: 'Lineup',
+  description: 'Check out the full lineup for ShatterFest in Bucharest.',
+}; 

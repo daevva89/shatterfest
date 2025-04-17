@@ -172,51 +172,33 @@ export default defineType({
       description: 'Select artists to feature on the homepage (will appear in the order selected)',
     }),
     
-    // SEO
+    // Homepage-specific SEO Settings
     defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'object',
-      description: 'Search engine optimization settings',
-      fields: [
-        defineField({
-          name: 'metaTitle',
-          title: 'Meta Title',
-          type: 'string',
-          description: 'Title used for browser tab and search results',
-          validation: (Rule) => Rule.max(60).warning('Should be under 60 characters'),
-        }),
-        defineField({
-          name: 'metaDescription',
-          title: 'Meta Description',
-          type: 'text',
-          rows: 3,
-          description: 'Description that appears in search results',
-          validation: (Rule) => Rule.max(160).warning('Should be under 160 characters'),
-        }),
-        defineField({
-          name: 'shareImage',
-          title: 'Social Sharing Image',
-          type: 'image',
-          description: 'Image used when sharing the homepage on social media',
-          options: {
-            hotspot: true,
-          },
-        }),
-      ],
+      name: 'pageTitle',
+      title: 'Page Title',
+      type: 'string',
+      description: 'Homepage title for browser tab and search results (defaults to site title if empty)',
+      validation: (Rule) => Rule.max(60),
+    }),
+    defineField({
+      name: 'pageDescription',
+      title: 'Page Description',
+      type: 'text',
+      rows: 3,
+      description: 'Homepage description for search results (defaults to site description if empty)',
+      validation: (Rule) => Rule.max(160),
     }),
   ],
   // There should only be one homepage document
   preview: {
     select: {
-      title: 'seo.metaTitle',
+      title: 'introTitle',
       media: 'heroImage',
     },
     prepare({ title, media }) {
       return {
-        title: title || 'Homepage',
-        subtitle: 'Main page configuration',
-        media: media,
+        title: title || 'Homepage Content',
+        media,
       };
     },
   },
