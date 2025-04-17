@@ -9,6 +9,7 @@ interface HeroProps {
     text: string;
     url: string;
     isEnabled: boolean;
+    priceInfo?: string;
   };
 }
 
@@ -35,7 +36,7 @@ const Hero = ({
       {/* Content container - position the CTA button at the bottom */}
       <div className="relative z-10 h-full flex flex-col justify-end">
         {/* CTA Button container with bottom padding */}
-        <div className="container mx-auto px-4 pb-8 text-center mb-0">
+        <div className="container mx-auto px-4 pb-16 text-center mb-0">
           {/* CTA Button */}
           {primaryCTA?.isEnabled && (
             <a 
@@ -45,7 +46,9 @@ const Hero = ({
               className="inline-block bg-gradient-to-r from-brand-orange-light via-brand-orange to-brand-orange-dark text-brand-white font-heading font-bold py-4 px-8 rounded text-xl md:text-2xl hover:opacity-90 transition-all duration-300 shadow-lg transform hover:scale-105"
             >
               {primaryCTA.text}
-              <span className="block text-sm font-sans font-normal mt-1">€46 / 230 RON - Presale</span>
+              {primaryCTA.priceInfo && (
+                <span className="block text-sm font-sans font-normal mt-1">{primaryCTA.priceInfo}</span>
+              )}
             </a>
           )}
         </div>

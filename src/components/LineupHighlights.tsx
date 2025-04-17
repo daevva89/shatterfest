@@ -18,21 +18,16 @@ interface ArtistData {
 
 interface LineupHighlightsProps {
   title: string;
-  subtitle?: string;
   artists: ArtistData[];
 }
 
-const LineupHighlights = ({ title, subtitle, artists }: LineupHighlightsProps) => {
+const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
   return (
     <section className="py-16 md:py-24 bg-brand-black">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-brand-white">
+        <h2 className="font-heading text-4xl md:text-5xl font-bold mb-12 text-brand-white">
           {title}
         </h2>
-        
-        {subtitle && (
-          <p className="text-xl text-brand-white/80 mb-12">{subtitle}</p>
-        )}
 
         {/* Grid for featured bands */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">

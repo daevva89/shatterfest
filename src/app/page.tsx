@@ -15,6 +15,7 @@ interface HomepageData {
     text: string;
     url: string;
     isEnabled: boolean;
+    priceInfo?: string;
   };
   introTitle?: string;
   introText?: any; // Rich text content
@@ -25,7 +26,6 @@ interface HomepageData {
     iconType: string;
   }[];
   lineupHighlightsTitle?: string;
-  lineupHighlightsSubtitle?: string;
   featuredArtists?: {
     _id: string;
     name: string;
@@ -55,7 +55,6 @@ async function getData(): Promise<HomepageData | null> {
         iconType
       },
       lineupHighlightsTitle,
-      lineupHighlightsSubtitle,
       "featuredArtists": featuredArtists[]->{
         _id,
         name,
@@ -104,7 +103,6 @@ export default async function Home() {
        homepageData.featuredArtists.length > 0 && (
         <LineupHighlights 
           title={homepageData.lineupHighlightsTitle}
-          subtitle={homepageData.lineupHighlightsSubtitle}
           artists={homepageData.featuredArtists}
         />
       )}

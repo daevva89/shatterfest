@@ -48,6 +48,12 @@ export default defineType({
           validation: (Rule) => Rule.required(),
         }),
         defineField({
+          name: 'priceInfo',
+          title: 'Price Information',
+          type: 'string',
+          description: 'Price information shown below the button (e.g., "€46 / 230 RON - Presale")',
+        }),
+        defineField({
           name: 'isEnabled',
           title: 'Enable Button',
           type: 'boolean',
@@ -135,12 +141,6 @@ export default defineType({
       title: 'Lineup Highlights Title',
       type: 'string',
       description: 'Title for the lineup highlights section',
-    }),
-    defineField({
-      name: 'lineupHighlightsSubtitle',
-      title: 'Lineup Highlights Subtitle',
-      type: 'string',
-      description: 'Optional subtitle for lineup highlights section',
     }),
     defineField({
       name: 'featuredArtists',
