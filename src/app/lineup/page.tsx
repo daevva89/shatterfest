@@ -1,7 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 import { client, urlFor } from '@/sanity/lib/client';
 import type { SanityDocument } from 'next-sanity';
+import ArtistGrid from '@/components/ArtistGrid';
 
 // GROQ query to fetch all artists, ordered by position (then name as fallback), including position field
 const ALL_ARTISTS_QUERY = `*[_type == "artist"] | order(coalesce(position, 1000), name asc) {
@@ -11,62 +11,25 @@ const ALL_ARTISTS_QUERY = `*[_type == "artist"] | order(coalesce(position, 1000)
   image,
   country,
   position,
-  day
+  day,
+  bio,
+  musicLinks
 }`;
 
-// Define the Artist type (can reuse or refine the one from LineupHighlights)
-interface Artist extends SanityDocument {
+// Define the Artist type 
+export interface Artist extends SanityDocument {
   name?: string;
   slug?: { current?: string };
   image?: any;
   country?: string;
   position?: number;
-  day?: 'friday' | 'saturday' | 'tbc' | string; // Add day to type
+  day?: 'friday' | 'saturday' | 'tbc' | string;
+  bio?: string;
+  musicLinks?: {
+    platform: string;
+    url: string;
+  }[];
 }
-
-// Helper function to render a grid of artists
-const ArtistGrid = ({ artists }: { artists: Artist[] }) => (
-  // Grid for artists within a day column
-  <div className="grid grid-cols-2 gap-4">
-    {artists.map((artist) => {
-      const imageUrl = artist.image ? urlFor(artist.image)?.width(300).height(300).url() : null;
-      const altText = artist.image?.alt || artist.name || 'Band photo';
-
-      return (
-        <div key={artist._id} className="group relative text-center bg-brand-gray/10 p-2 rounded-lg shadow-md hover:bg-brand-gray/20 transition-colors duration-200">
-          <div className="relative aspect-square mb-2 overflow-hidden rounded">
-            {imageUrl ? (
-              <Image 
-                src={imageUrl}
-                alt={altText}
-                fill
-                sizes="(max-width: 640px) 50vw, 25vw" // Adjusted sizes for 2 columns
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                unoptimized={process.env.NODE_ENV !== 'production'}
-              />
-            ) : (
-              <div className="w-full h-full bg-brand-gray flex items-center justify-center">
-                <span className="text-brand-white/50 text-sm">No Image</span>
-              </div>
-            )}
-            {/* Link overlay - Optional: links to individual artist page */}
-            {/* 
-            <Link href={`/artists/${artist.slug?.current || ''}`} className="absolute inset-0 z-10">
-               <span className="sr-only">View {artist.name}</span>
-            </Link> 
-            */}
-          </div>
-          <h3 className="font-heading text-lg font-medium text-brand-white truncate" title={artist.name}>
-            {artist.name}
-          </h3>
-          {artist.country && (
-            <p className="text-sm text-brand-white/70">{artist.country}</p>
-          )}
-        </div>
-      );
-    })}
-  </div>
-);
 
 // This is a Server Component by default, capable of async data fetching
 export default async function LineupPage() {

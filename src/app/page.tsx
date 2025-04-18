@@ -91,6 +91,12 @@ async function getData(): Promise<HomepageData | null> {
       name,
       country,
       position,
+      day,
+      bio,
+      "musicLinks": musicLinks[]{
+        platform,
+        url
+      },
       "image": image {
         "url": asset->url,
         "alt": alt

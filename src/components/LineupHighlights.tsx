@@ -14,6 +14,13 @@ interface ArtistData {
   slug?: { 
     current: string;
   };
+  day?: string;
+  position?: number;
+  bio?: string;
+  musicLinks?: {
+    platform: string;
+    url: string;
+  }[];
 }
 
 interface LineupHighlightsProps {
@@ -34,7 +41,10 @@ const LineupHighlights = ({ title, artists }: LineupHighlightsProps) => {
           {/* Map over artists passed as props */}
           {artists.map((artist) => {
             return (
-              <div key={artist._id} className="group relative overflow-hidden rounded-lg shadow-lg">
+              <div 
+                key={artist._id} 
+                className="group relative overflow-hidden rounded-lg shadow-lg"
+              >
                 {artist.image?.url ? (
                   <Image 
                     src={artist.image.url} 
