@@ -1,4 +1,4 @@
-import { DefaultDocumentNodeResolver, StructureBuilder } from 'sanity/desk'
+import { StructureBuilder, ListItemBuilder } from 'sanity/structure'
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure = (S: StructureBuilder) =>
@@ -25,6 +25,6 @@ export const structure = (S: StructureBuilder) =>
         
       // All other document types
       ...S.documentTypeListItems().filter(
-        (listItem) => !['siteSettings', 'homepage'].includes(listItem.getId() as string)
+        (listItem: ListItemBuilder) => !['siteSettings', 'homepage'].includes(listItem.getId() as string)
       ),
     ])
