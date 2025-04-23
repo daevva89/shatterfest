@@ -6,8 +6,6 @@ import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
 import { Metadata } from "next";
 
-export const dynamic = 'force-dynamic';
-
 // Define the type for homepage data
 interface HomepageData {
   heroImage?: {
@@ -146,10 +144,6 @@ export default async function Home() {
     ? getRandomItems(homepageData.allArtists, 4)
     : [];
   
-  // --- VERCEL RUNTIME LOGGING --- 
-  console.log('--- VERCEL RUNTIME: Rendering Home with Data ---', JSON.stringify(homepageData, null, 2));
-  // -----------------------------
-
   return (
     <main>
       {/* Only render Hero if image or CTA exists */}
