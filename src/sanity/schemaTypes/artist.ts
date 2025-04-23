@@ -1,12 +1,50 @@
 import { defineField, defineType } from 'sanity'
 import { UsersIcon, CalendarDaysIcon } from '@heroicons/react/24/outline' // Or any relevant icon
+import type { SanityClient } from 'sanity' // Import SanityClient for isUnique check
+
+// Helper function to check slug uniqueness across languages
+const isSlugUniqueAcrossLanguages = (slug: string | undefined, context: any): Promise<boolean> => {
+  const { document, getClient } = context
+
+  if (!slug || !document?.language) {
+    return Promise.resolve(true) // If no slug or language, it's technically unique
+  }
+
+  const client = getClient({ apiVersion: '2023-05-01' }) // Use an appropriate API version
+  const id = document._id.replace(/^drafts\./, '') // Ensure we compare against the published version
+  const params = {
+    draft: `drafts.${id}`,
+    published: id,
+    language: document.language,
+    slug,
+  }
+
+  // Query checks for documents of the same type, same language, different ID, and same slug
+  const query = `!defined(*[
+    _type == 'artist' &&
+    language == $language &&
+    !(_id in [$draft, $published]) &&
+    slug.current == $slug
+  ][0]._id)`
+
+  return client.fetch(query, params)
+}
 
 export default defineType({
   name: 'artist',
   title: 'Artist / Band',
   type: 'document',
   icon: UsersIcon,
+  // @ts-ignore -- i18n property is added by the plugin and not recognized by base types
+  i18n: true, // Enable document internationalization
   fields: [
+    // Add the language field required by the plugin
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
     defineField({
       name: 'name',
       title: 'Artist/Band Name',
@@ -27,6 +65,7 @@ export default defineType({
       options: {
         source: 'name',
         maxLength: 96,
+        isUnique: isSlugUniqueAcrossLanguages, // Use the custom uniqueness checker
       },
       description: 'Used for the artist\'s page URL. Click Generate.',
       validation: (Rule) => Rule.required(),

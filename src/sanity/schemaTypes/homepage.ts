@@ -6,7 +6,16 @@ export default defineType({
   title: 'Homepage',
   type: 'document',
   icon: HomeIcon,
+  // @ts-ignore -- i18n property is added by the plugin and not recognized by base types
+  i18n: true, // Enable document internationalization
   fields: [
+    // Add the language field required by the plugin
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
     // Hero Section
     defineField({
       name: 'heroImage',

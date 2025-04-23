@@ -1,0 +1,18 @@
+{
+  "lineupPage": {
+    "title": "Lineup By Day",
+    "description": "Check out the full lineup for ShatterFest.",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "comingSoonFriday": "Lineup for Friday coming soon.",
+    "comingSoonSaturday": "Lineup for Saturday coming soon.",
+    "comingSoonFull": "Full lineup details coming soon!"
+  },
+  "header": {
+    "home": "Home",
+    "lineup": "Lineup",
+    "info": "Info",
+    "tickets": "Tickets",
+    "buyTickets": "BUY TICKETS"
+  }
+} 

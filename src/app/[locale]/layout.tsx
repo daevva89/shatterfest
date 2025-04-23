@@ -4,7 +4,11 @@ import { Roboto, Oswald } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import '../globals.css';
-import { getSiteSettings } from '@/lib/sanity';
+import { getSiteSettings, SiteSettings } from '@/lib/sanity';
+import { getDictionary } from '@/lib/dictionaries';
+
+// Define Locale type directly
+type Locale = 'en' | 'ro';
 
 // Configure Roboto (Body Font)
 const roboto = Roboto({
@@ -23,7 +27,7 @@ const oswald = Oswald({
 });
 
 // Generate metadata from Sanity
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { locale: Locale } }): Promise<Metadata> {
   try {
     const siteSettings = await getSiteSettings();
     
@@ -53,16 +57,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({
   children,
+  params: { locale }
 }: {
   children: React.ReactNode;
+  params: { locale: Locale };
 }) {
-  // Fetch site settings for the header
-  const siteSettings = await getSiteSettings();
+  // Fetch site settings and dictionary concurrently
+  const [siteSettings, dict] = await Promise.all([
+    getSiteSettings(),
+    getDictionary(locale)
+  ]);
 
   return (
-    <html lang="en" className={`${roboto.variable} ${oswald.variable}`}>
+    <html lang={locale} className={`${roboto.variable} ${oswald.variable}`}>
       <body className="bg-brand-black font-sans pt-16 md:pt-20">
-        <Header siteSettings={siteSettings} />
+        <Header siteSettings={siteSettings} locale={locale} headerDict={dict.header} />
         <main className="flex-grow">{children}</main>
         <Footer siteSettings={siteSettings} />
       </body>

@@ -1,0 +1,18 @@
+{
+  "lineupPage": {
+    "title": "Program Pe Zile",
+    "description": "Vezi programul complet pentru ShatterFest.",
+    "friday": "Vineri",
+    "saturday": "Sâmbătă",
+    "comingSoonFriday": "Programul pentru Vineri va fi anunțat în curând.",
+    "comingSoonSaturday": "Programul pentru Sâmbătă va fi anunțat în curând.",
+    "comingSoonFull": "Detalii complete despre program vor fi anunțate în curând!"
+  },
+  "header": {
+    "home": "Acasă",
+    "lineup": "Program",
+    "info": "Info",
+    "tickets": "Bilete",
+    "buyTickets": "CUMPĂRĂ BILETE"
+  }
+} 

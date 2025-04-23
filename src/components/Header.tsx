@@ -5,13 +5,29 @@ import Link from 'next/link';
 import Image from 'next/image'; // Add Image import
 import { XMarkIcon, Bars3Icon } from '@heroicons/react/24/solid';
 import { SiteSettings } from '@/lib/sanity'; // Import SiteSettings type
+import LanguageSwitcher from './LanguageSwitcher'; // Import the switcher
+// import { Locale } from '@/config/i18n'; // Remove unused import
+
+// Define type for the header dictionary slice
+interface HeaderDict {
+  home: string;
+  lineup: string;
+  tickets: string; // Note: The dictionary has 'tickets', but the button uses 'BUY TICKETS' - adjust dict or add key if needed
+  buyTickets?: string; // Adding a potential key for the button itself
+  info?: string; // Adding key for info page
+}
+
+// Define Locale type locally for Header
+type Locale = 'en' | 'ro';
 
 // Define props for the component
 interface HeaderProps {
   siteSettings?: SiteSettings | null;
+  locale: Locale; // Locale is still needed for links
+  headerDict: HeaderDict; // Add headerDict prop
 }
 
-const Header = ({ siteSettings }: HeaderProps) => {
+const Header = ({ siteSettings, locale, headerDict }: HeaderProps) => {
   // State for mobile menu visibility
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -30,6 +46,10 @@ const Header = ({ siteSettings }: HeaderProps) => {
   const logoAlt = siteSettings?.logo?.alt || 'ShatterFest';
   const siteTitle = siteSettings?.title || 'ShatterFest';
   const ticketUrl = siteSettings?.ticketUrl || 'https://www.iabilet.ro/bilete-shatterfest-105031/';
+
+  // Decide the button text (use specific key or fallback)
+  const buyTicketsText = headerDict.buyTickets || headerDict.tickets || 'BUY TICKETS'; // Fallback chain
+  const infoText = headerDict.info || 'Info'; // Fallback for Info link
 
   return (
     // Make header sticky, full width, high z-index, add bottom border
@@ -50,9 +70,9 @@ const Header = ({ siteSettings }: HeaderProps) => {
           </button>
         </div>
 
-        {/* Logo - Centered on mobile */}
+        {/* Logo - Link to locale root */}
         <Link 
-          href="/" 
+          href={`/${locale}/`}
           className="relative flex items-center justify-center md:justify-start hover:opacity-90 transition-opacity w-1/2 md:w-auto mx-auto md:mx-0" 
           onClick={closeMobileMenu}
         >
@@ -77,18 +97,18 @@ const Header = ({ siteSettings }: HeaderProps) => {
         {/* Desktop Navigation (Hidden on small screens) */}
         <nav className="hidden md:flex items-center space-x-6">
           <ul className="flex space-x-6 items-center">
-            <li><Link href="/" className="hover:text-brand-green transition-colors">Home</Link></li>
-            <li><Link href="/lineup" className="hover:text-brand-green transition-colors">Lineup</Link></li>
-            <li><Link href="/info" className="hover:text-brand-green transition-colors">Info</Link></li>
+            <li><Link href={`/${locale}/`} className="hover:text-brand-green transition-colors">{headerDict.home}</Link></li>
+            <li><Link href={`/${locale}/lineup`} className="hover:text-brand-green transition-colors">{headerDict.lineup}</Link></li>
+            <li><Link href={`/${locale}/info`} className="hover:text-brand-green transition-colors">{infoText}</Link></li>
+            <li><LanguageSwitcher /></li>
             <li>
-              {/* External Link to Tickets - use <a> tag */}
               <a 
                 href={ticketUrl}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-brand-orange-light via-brand-orange to-brand-orange-dark text-brand-white font-bold py-2 px-4 rounded hover:opacity-90 transition-opacity text-sm"
               >
-                BUY TICKETS
+                {buyTicketsText}
               </a>
             </li>
           </ul>
@@ -107,9 +127,9 @@ const Header = ({ siteSettings }: HeaderProps) => {
         `}
       >
         <nav className="flex flex-col space-y-6 mt-10">
-          <Link href="/" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Home</Link>
-          <Link href="/lineup" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Lineup</Link>
-          <Link href="/info" className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>Info</Link>
+          <Link href={`/${locale}/`} className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>{headerDict.home}</Link>
+          <Link href={`/${locale}/lineup`} className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>{headerDict.lineup}</Link>
+          <Link href={`/${locale}/info`} className="text-xl hover:text-brand-green transition-colors" onClick={closeMobileMenu}>{infoText}</Link>
           <a 
             href={ticketUrl}
             target="_blank" 
@@ -117,7 +137,7 @@ const Header = ({ siteSettings }: HeaderProps) => {
             className="block w-full text-center mt-6 bg-gradient-to-r from-brand-orange-light via-brand-orange to-brand-orange-dark text-brand-white font-bold py-3 px-4 rounded hover:opacity-90 transition-opacity"
             onClick={closeMobileMenu}
           >
-            BUY TICKETS
+            {buyTicketsText}
           </a>
         </nav>
       </div>
