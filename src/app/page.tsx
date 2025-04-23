@@ -115,10 +115,6 @@ async function getData(): Promise<HomepageData | null> {
       allArtists
     };
     
-    // --- VERCEL RUNTIME LOGGING --- 
-    console.log('--- VERCEL RUNTIME: Fetched Homepage Data ---', JSON.stringify(combinedData, null, 2));
-    // -----------------------------
-    
     return combinedData;
   } catch (error) {
     console.error('Error fetching homepage data:', error);
@@ -150,6 +146,10 @@ export default async function Home() {
     ? getRandomItems(homepageData.allArtists, 4)
     : [];
   
+  // --- VERCEL RUNTIME LOGGING --- 
+  console.log('--- VERCEL RUNTIME: Rendering Home with Data ---', JSON.stringify(homepageData, null, 2));
+  // -----------------------------
+
   return (
     <main>
       {/* Only render Hero if image or CTA exists */}
