@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/client';
 import ArtistModal from './ArtistModal';
-import type { Artist } from '@/app/lineup/page';
+import type { Artist } from '@/lib/sanity';
 
 interface ArtistGridProps {
   artists: Artist[];
