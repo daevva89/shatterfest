@@ -6,6 +6,8 @@ import { client } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
 import { Metadata } from "next";
 
+export const dynamic = 'force-dynamic';
+
 // Define the type for homepage data
 interface HomepageData {
   heroImage?: {
@@ -108,16 +110,10 @@ async function getData(): Promise<HomepageData | null> {
     const allArtists = await client.fetch<any[]>(artistsQuery);
     
     // Combine the data
-    const combinedData = {
+    return {
       ...homepageData,
       allArtists
     };
-    
-    // --- VERCEL BUILD LOGGING --- 
-    console.log('--- VERCEL BUILD: Fetched Homepage Data ---', JSON.stringify(combinedData, null, 2));
-    // -----------------------------
-    
-    return combinedData;
   } catch (error) {
     console.error('Error fetching homepage data:', error);
     return null;
