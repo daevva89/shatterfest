@@ -3,7 +3,7 @@ import React from 'react';
 import { Roboto, Oswald } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import './globals.css';
+import '../globals.css';
 import { getSiteSettings } from '@/lib/sanity';
 
 // Configure Roboto (Body Font)
